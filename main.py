@@ -39,14 +39,14 @@ def player_round(player_name, round_number):
 
 
 def game():
-    player1_name = input("Enter Player 1's name: ")
-    player2_name = input("Enter Player 2's name: ")
-    scores = pd.DataFrame(columns=[player1_name, player2_name], index=range(1, 7))
+    num_players = int(input("Enter the number of players: "))
+    player_names = [input(f"Enter Player {i + 1}'s name: ") for i in range(num_players)]
+    scores = pd.DataFrame(columns=player_names, index=range(1, 7))
     scores.index.name = "Round"
 
     for round_num in range(1, 7):
-        scores.loc[round_num, player1_name] = player_round(player1_name, round_num)
-        scores.loc[round_num, player2_name] = player_round(player2_name, round_num)
+        for player_name in player_names:
+            scores.loc[round_num, player_name] = player_round(player_name, round_num)
 
     print("\nFinal Scoreboard:")
     print(scores)
