@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import random
 
 
 def roll_dices(dice_values, reroll_indices):
@@ -50,8 +51,30 @@ def game():
 
     print("\nFinal Scoreboard:")
     print(scores)
+    total_scores = scores.sum()
     print("\nTotal Scores:")
-    print(scores.sum().to_string())
+    print(total_scores.to_string())
+
+    max_score = total_scores.max()
+    winners = total_scores[total_scores == max_score].index.tolist()
+
+    congratulations_messages = [
+        "Victory is yours, {winner}! With an impressive {score} points, you've triumphed over the odds. Well played!",
+        "Bravo, {winner}! Your strategic prowess and luck have led you to victory with {score} points. The crown is well-deserved!",
+        "Outstanding performance, {winner}! You've swept the board with {score} points. Your name will be remembered in the halls of fame!",
+        "Is it skill? Is it luck? Who cares - {winner}, you're the champion with {score} points! Drinks are on you, right?",
+        "In the grand arena of fate, {winner} emerged victorious with {score} points! Remember, in the game of dice, as in life, fortune favors the bold."
+    ]
+
+
+
+    if len(winners) > 1:
+        winners_text = ", ".join(winners[:-1]) + " and " + winners[-1]
+        tie_message = f"\nIt's a tie! Congratulations to {winners_text} for scoring {max_score} points!"
+        print(tie_message)
+    else:
+        selected_message = random.choice(congratulations_messages).format(winner=winners[0], score=max_score)
+        print(selected_message)
 
 
 game()
