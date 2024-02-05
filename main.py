@@ -29,19 +29,16 @@ def player_round(player_name, used_categories):
     dice_values = np.random.randint(1, 7, size=5)
     print(f"Initial roll: {dice_values}")
 
-    for attempt in range(2):  # Intended for up to two rerolls
+    for attempt in range(2):
         reroll_input = input("Enter the indices of dice to reroll (0-4), separate by spaces, or press enter to keep: ")
 
-        # Check if the player pressed enter without any input
         if reroll_input.strip() == '':
-            break  # Exit the reroll loop immediately
+            break
 
         reroll_indices = [int(index) for index in reroll_input.split() if index.isdigit() and 0 <= int(index) < 5]
 
-        # Validate reroll indices and provide feedback if necessary
         if len(reroll_indices) != len(reroll_input.split()):
             print("Invalid choice detected. Please enter indices between 0 and 4 only.")
-            # Skip the rest of this loop iteration and do not break; give the user another chance to enter valid input
             continue
 
         dice_values = roll_dices(dice_values, np.array(reroll_indices))
