@@ -29,12 +29,22 @@ def player_round(player_name, used_categories):
     dice_values = np.random.randint(1, 7, size=5)
     print(f"Initial roll: {dice_values}")
 
-    for attempt in range(10):
+    for attempt in range(2):  # Intended for up to two rerolls
         reroll_input = input("Enter the indices of dice to reroll (0-4), separate by spaces, or press enter to keep: ")
+
+        # Check if the player pressed enter without any input
         if reroll_input.strip() == '':
-            break
-        reroll_indices = np.array([int(index) for index in reroll_input.split() if index.isdigit() and 0 <= int(index) < 5])
-        dice_values = roll_dices(dice_values, reroll_indices)
+            break  # Exit the reroll loop immediately
+
+        reroll_indices = [int(index) for index in reroll_input.split() if index.isdigit() and 0 <= int(index) < 5]
+
+        # Validate reroll indices and provide feedback if necessary
+        if len(reroll_indices) != len(reroll_input.split()):
+            print("Invalid choice detected. Please enter indices between 0 and 4 only.")
+            # Skip the rest of this loop iteration and do not break; give the user another chance to enter valid input
+            continue
+
+        dice_values = roll_dices(dice_values, np.array(reroll_indices))
         print(f"New roll: {dice_values}")
 
     if np.all(dice_values == dice_values[0]):
@@ -98,11 +108,16 @@ def game():
     winners = total_scores[total_scores == max_score].index.tolist()
 
     congratulations_messages = [
-        "Victory is yours, {winner}! With an impressive {score} points, you've triumphed over the odds. Well played!",
-        "Bravo, {winner}! Your strategic prowess and luck have led you to victory with {score} points. The crown is well-deserved!",
-        "Outstanding performance, {winner}! You've swept the board with {score} points. Your name will be remembered in the halls of fame!",
-        "Is it skill? Is it luck? Who cares - {winner}, you're the champion with {score} points! Drinks are on you, right?",
-        "In the grand arena of fate, {winner} emerged victorious with {score} points! Remember, in the game of dice, as in life, fortune favors the bold."
+        "🌟 The stars aligned for you, {winner}! With {score} points, you've danced through the dice storm and emerged as the undisputed Yatzy Emperor. Long may you roll! 🌟",
+        "🚀 {winner}, you've rocketed past the competition and landed squarely in the winner's circle with {score} points! Your dice-rolling skills are truly out of this world. 🚀",
+        "🎩 Hats off to you, {winner}! With a magical score of {score} points, you've proven that luck is just skill in disguise. The wizardry of dice bends to your will! 🎩",
+        "🏰 Against all odds, {winner} has stormed the castle and seized the throne with {score} points! All hail the new ruler of Yatzy Kingdom, where dice rule the land! 🏰",
+        "🍀 {winner}, it's not just luck—it's legend. With {score} points, you've rolled your way into the annals of Yatzy history. Let's carve your name on the high score tablet! 🍀",
+        "🎉 Confetti and cheers for {winner}, the Yatzy Maestro with {score} points! Your symphony of dice has played the sweetest victory tune. Encore! 🎉",
+        "🔥 {winner}, you've set the game ablaze with your fiery score of {score} points! Like a phoenix, you've risen from the ashes of chance to claim your victory. 🔥",
+        "🌈 {winner}, you've captured the pot of gold at the end of the rainbow with {score} points! In the realm of Yatzy, you're the leprechaun that outsmarted luck itself. 🌈",
+        "⚔️ In the epic saga of dice, {winner} has emerged as the hero of legend with {score} points! Your tale will be told across the lands, inspiring future generations of rollers. ⚔️",
+        "🕵️‍♂️ Mystery solved, {winner}! With {score} points, you've uncovered the secret to ultimate Yatzy mastery. The game's afoot, and you're the detective who cracked the code! 🕵️‍♂️"
     ]
 
     if len(winners) > 1:
@@ -115,3 +130,4 @@ def game():
 
 
 game()
+print("\nThank you for playing!")
