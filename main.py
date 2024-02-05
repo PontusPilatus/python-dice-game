@@ -3,6 +3,14 @@ import pandas as pd
 import random
 
 
+def print_separator(title=None):
+    """Prints a separator with an optional title centered."""
+    if title:
+        print(f"\n{'=' * 10} {title} {'=' * 10}\n")
+    else:
+        print("\n" + "=" * 30 + "\n")
+
+
 def roll_dices(dice_values, reroll_indices):
     dice_values[reroll_indices] = np.random.randint(1, 7, size=len(reroll_indices))
     return dice_values
@@ -17,10 +25,11 @@ def calculate_round_score(dice_values, target_number):
 
 
 def player_round(player_name, used_categories):
+    print_separator(f"{player_name}'s Turn")
     dice_values = np.random.randint(1, 7, size=5)
-    print(f"{player_name}'s turn. Initial roll: {dice_values}")
+    print(f"Initial roll: {dice_values}")
 
-    for attempt in range(2):
+    for attempt in range(10):
         reroll_input = input("Enter the indices of dice to reroll (0-4), separate by spaces, or press enter to keep: ")
         if reroll_input.strip() == '':
             break
@@ -52,6 +61,7 @@ def player_round(player_name, used_categories):
 
 
 def game():
+    print_separator("Welcome to Yatzy!")
     while True:
         try:
             num_players = int(input("Enter the number of players (1-10): "))
@@ -68,6 +78,7 @@ def game():
     used_categories = {player: [] for player in player_names}
 
     for round_num in list(range(1, 7)) + ['Yatzy']:
+        print_separator(f"Round {round_num}")
         for player_name in player_names:
             round_score, target_number = player_round(player_name, used_categories[player_name])
             if target_number == 'Yatzy' and round_score == 50:
