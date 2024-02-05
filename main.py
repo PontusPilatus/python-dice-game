@@ -20,7 +20,7 @@ def player_round(player_name, used_categories):
     dice_values = np.random.randint(1, 7, size=5)
     print(f"{player_name}'s turn. Initial roll: {dice_values}")
 
-    for attempt in range(10):
+    for attempt in range(2):
         reroll_input = input("Enter the indices of dice to reroll (0-4), separate by spaces, or press enter to keep: ")
         if reroll_input.strip() == '':
             break
