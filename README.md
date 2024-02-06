@@ -14,7 +14,7 @@ Numpy - Används för effektiv hantering av numeriska operationer och tärningsl
 
 Pandas - Möjliggör avancerad datahantering och poängberäkning, samt en strukturerad presentation av resultat via poängtavlan.
 
-Pyarrow - Nödvändigt för att kompatibiliteten och prestandan hos Pandas-datastrukturer ska vara optimerad, vilket bidrar till en stabil och effektiv applikation.
+Pyarrow - Nödvändigt för att kompatibiliteten och prestandan hos Pandas-datastrukturer ska vara optimerad, vilket bidrar till en stabil och effektiv applikation. (OBS var tvungen att köra en pip install pyarrow för att det skulle fungera)
 
 Lycka till i jakten på den omtalade yatzyn!
 
