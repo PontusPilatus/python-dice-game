@@ -39,28 +39,39 @@ def player_round(player_name, used_categories):
     # Visar värdet för de fem tärningarna.
     print(f"Initial roll: {dice_values}")
 
-    # Låter spelaren slå om tärningar upp till två gånger.
-    for attempt in range(2):
-        # Spelaren få ange index på de tärningarna de vill slå om.
+    # Låter varje spelare slå om tärningarna upp till två gånger.
+    reroll_attempts = 2
+    # Loopar så länge spelaren har omkast kvar.
+    while reroll_attempts > 0:
+        # Frågar spelaren vilka tärningar som den vill kasta om.
         reroll_input = input("Enter the indices of dice to reroll (0-4), separate by spaces, or press enter to keep: ")
-
-        # Om spelaren trycker på enter så går spelet vidare.
+        # Kontrollerar om spelaren tryckte enter direkt utan att ange några index.
         if reroll_input.strip() == '':
             break
 
-        # Skapar en lista med index för de tärningarna som ska slås om.
-        reroll_indices = [int(index) for index in reroll_input.split() if index.isdigit() and 0 <= int(index) < 5]
+        # Initialiserar en flagga för att spåra om omkastningen är giltig.
+        valid_reroll = False
+        try:
+            # Kontrollerar att varje index är inom giltigt intervall (0-4).
+            reroll_indices = [int(index) for index in reroll_input.split() if index.isdigit() and 0 <= int(index) < 5]
+            # Kontrollerar om längden på listan med omkastningsindex matchar antalet inskrivna värden.
+            if len(reroll_indices) == len(reroll_input.split()):
+                # Anropar funktionen för att slå om tärningarna med de valda indexen.
+                dice_values = roll_dices(dice_values, np.array(reroll_indices))
+                # Skriver ut de nya tärningsvärdena efter omkastningen.
+                print(f"New roll: {dice_values}")
+                # Sätter flaggan till True då en giltig omkastning har gjorts.
+                valid_reroll = True
+            else:
+                # Skriver ut ett felmeddelande om spelaren har angivit ogiltiga index.
+                print("Invalid choice detected. Please enter indices between 0 and 4 only.")
+        except ValueError:
+            # Skriver ut ett felmeddelande om spelaren angivit något annat än siffror.
+            print("Invalid input. Please enter valid dice indices as numbers.")
 
-        # Kontrollerar om alla angivna index är giltiga.
-        if len(reroll_indices) != len(reroll_input.split()):
-            # Felmeddelande om det angetts något annat än de index (0-4) som går att välja på.
-            print("Invalid choice detected. Please enter indices between 0 and 4 only.")
-            continue
-
-        # Slår om de valda tärningarna.
-        dice_values = roll_dices(dice_values, np.array(reroll_indices))
-        # Visar det nya resultatet.
-        print(f"New roll: {dice_values}")
+        if valid_reroll:
+            reroll_attempts -= 1
+        # Ingen minskning av reroll_attempts om ogiltigt val, så spelaren får försöka igen tills giltigt val gjorts.
 
     # Kontrollerar om spelaren fått yatzy.
     if np.all(dice_values == dice_values[0]):
